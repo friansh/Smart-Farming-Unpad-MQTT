@@ -16,9 +16,11 @@ const Image = require("./model/Image");
 const mongoose = require("mongoose");
 
 mongoose.connect(
-  `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_AUTH}`,
+  `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
   {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
     dbName: process.env.DB_NAME,
   }
 );
