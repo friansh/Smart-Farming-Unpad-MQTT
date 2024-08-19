@@ -15,22 +15,24 @@ const Image = require("./model/Image");
 
 const mongoose = require("mongoose");
 
+const { ServerApiVersion } = require('mongodb');
+
 mongoose.connect(
-  `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+  process.env.DB_CONN_STRING,
   {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
     dbName: process.env.DB_NAME,
   }
 );
 
-var client = mqtt.connect("mqtt://smartfarmingunpad.com:8883", {
-  username: "default",
-  password: "default",
+var client = mqtt.connect(`mqtt://${process.env.MQTT_SERVER}:${process.env.MQTT_PORT}`, {
+  username: process.env.MQTT_USERNAME,
+  password: process.env.MQTT_PASSWORD,
 });
 
+console.log(`Connecting to: mqtt://${process.env.MQTT_SERVER}:${process.env.MQTT_PORT} with username: "${process.env.MQTT_USERNAME}" and password: "${process.env.MQTT_PASSWORD}"`);
+
 client.on("connect", function () {
+  console.log("MQTT Connected!");
   client.subscribe("friansh/float_data/+/+", (err) => {
     if (!err) console.log("The server is listening to the float data topic.");
   });
